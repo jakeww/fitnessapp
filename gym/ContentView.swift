@@ -5,7 +5,7 @@
 //  Created by Jake Watembach on 3/12/23.
 //
 
-//test
+
 
 import SwiftUI
 
@@ -14,7 +14,8 @@ struct ContentView: View {
     @AppStorage("isFirstTime") var isFirstTime = true
     
     @State private var gender: String = ""
-    @State private var height: String = ""
+    @State private var heightFeet: Int = 0
+    @State private var heightInches: Int = 0
     @State private var weight: String = ""
     @State private var fitnessGoal: String = ""
     @State private var fitnessLevel: String = ""
@@ -42,12 +43,26 @@ struct ContentView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
                 
-                HStack {
-                    Text("Height (in): ")
-                    TextField("Enter your height", text: $height)
-                        .keyboardType(.numberPad)
-                }
-                .padding()
+                VStack(alignment: .leading, spacing: 10) {
+                                    Text("Height:")
+                                        .font(.headline)
+                                    HStack {
+                                        Picker("Feet", selection: $heightFeet) {
+                                            ForEach(0..<10) { feet in
+                                                Text("\(feet) ft")
+                                            }
+                                        }
+                                        .frame(width: 100)
+                                        
+                                        Picker("Inches", selection: $heightInches) {
+                                            ForEach(0..<12) { inches in
+                                                Text("\(inches) in")
+                                            }
+                                        }
+                                        .frame(width: 100)
+                                    }
+                                }
+                                .padding()
                 
                 HStack {
                     Text("Weight (lbs): ")
@@ -88,6 +103,19 @@ struct ContentView: View {
             Text("Welcome back to My Fitness App!")
                 .font(.largeTitle)
                 .padding()
+            
+            //for testing use only
+            Button(action: {
+                isFirstTime = true
+            }) {
+                Text("Reset First Time")
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(Color.red)
+                    .cornerRadius(10)
+            }
+            .padding()
+
             
             // Display saved user preferences here
         }
